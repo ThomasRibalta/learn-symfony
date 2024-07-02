@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ "Recipe : " ~ recipe.getTitle() }}
+{% endblock %}
+
+{% block body %}
+    Recipe : {{ recipe.getSlug() }} {{ recipe.getId() }}
+{% endblock %}

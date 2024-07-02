@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+Toutes les recettes
+{% endblock %}
+
+{% block body %}
+
+<h1>My Recipes</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title of recipe</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {% for recipe in recipes %}
+        <tr>
+            <td>
+                <a href="{{ path('recipe.show', {id: recipe.getId(), slug: recipe.getSlug()}) }}">{{ recipe.getTitle() }}</a>
+            </td>
+            <td>
+                <a href="{{ path('recipe.edit', {id: recipe.id}) }}" class="btn btn-warning">Edit</a>
+                <a href="{{ path('recipe.delete', {id: recipe.id}) }}" class="btn btn-danger">Delete</a>
+            </td>
+        </tr>
+    {% else %}
+        No recipes found.
+    {% endfor %}
+</table>
+
+<a href="{{ path('recipe.create') }}" class="btn btn-primary">Create a new recipe</a>
+
+{% endblock %}

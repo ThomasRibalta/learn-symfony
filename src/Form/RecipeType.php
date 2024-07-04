@@ -14,6 +14,11 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 class RecipeType extends AbstractType
 {
+
+    public function __construct(private FormEventListener $listener)
+    {
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -26,30 +31,9 @@ class RecipeType extends AbstractType
             ->add('save', SubmitType::class, [
                 'label' => 'Submit',
             ])
-            ->addEventListener(FormEvents::PRE_SUBMIT, $this->generateSlug(...))
-            ->addEventListener(FormEvents::POST_SUBMIT, $this->setTime(...))
+            ->addEventListener(FormEvents::PRE_SUBMIT, $this->listener->generateSlug('title'))
+            ->addEventListener(FormEvents::POST_SUBMIT, $this->listener->setTime())
         ;
-    }
-
-    public function generateSlug(FormEvent $event): void
-    {
-        $data = $event->getData();
-        if (empty($data['slug'])) {
-            $slugger = new AsciiSlugger();
-            $data['slug'] = strtolower($slugger->slug($data['title']));
-            $event->setData($data);
-        }
-    }
-
-    public function setTime(FormEvent $event): void
-    {
-        $recipe = $event->getData();
-        if (!$recipe instanceof Recipe) {
-            return;
-        }
-        $recipe->setUpdatedAt(new \DateTimeImmutable());
-        if ($recipe->getId() === null)
-            $recipe->setCreatedAt(new \DateTimeImmutable());
     }
 
     public function configureOptions(OptionsResolver $resolver): void

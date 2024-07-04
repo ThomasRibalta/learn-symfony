@@ -1,0 +1,40 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title %}
+Toutes les recettes
+{% endblock %}
+
+{% block body %}
+
+<h1>My Recipes</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Title of recipe</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {% for category in categories %}
+        <tr>
+            <td>
+                <a href="{{ path('admin.category.show', {id: category.getId(), slug: category.getSlug()}) }}">{{ category.getTitle() }}</a>
+            </td>
+            <td>
+                <div class="d-flex gap-1">
+                    <a href="{{ path('admin.category.edit', {id: category.id}) }}" class="btn btn-warning">Edit</a>
+                    <form action = "{{ path('admin.category.delete', {id: category.id}) }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    {% else %}
+        No recipes found.
+    {% endfor %}
+</table>
+
+<a href="{{ path('admin.category.create') }}" class="btn btn-primary">Create a new category</a>
+
+{% endblock %}

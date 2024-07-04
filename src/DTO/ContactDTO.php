@@ -8,7 +8,7 @@ class ContactDTO
 {
 
   #[Assert\NotBlank]
-  #[Assert\length(min: 3, max: 50)]
+  #[Assert\Length(min: 3, max: 50)]
   public string $username = '';
 
   #[Assert\NotBlank]

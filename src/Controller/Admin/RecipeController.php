@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\Recipe;
 use App\Form\RecipeType;
+use App\Repository\CategoryRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,8 +17,9 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RecipeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(Request $request, RecipeRepository $repository): Response
+    public function index(Request $request, RecipeRepository $repository, CategoryRepository $Crepository, EntityManagerInterface $em): Response
     {
+        $em->flush();
         $recipes = $repository->findAll();
         return $this->render('admin/recipe/index.html.twig', ['recipes' => $recipes]);
     }
@@ -58,7 +60,7 @@ class RecipeController extends AbstractController
         {
             $em->flush();
             $this->addFlash('success', 'Recipe updated successfully');
-            return $this->redirectToRoute('admin.recipe.show', ['id' => $recipe->getId(), 'slug' => $recipe->getSlug()]);
+            return $this->redirectToRoute('admin.recipe.index');
         }
         return $this->render('admin/recipe/edit.html.twig', ['recipe' => $recipe, 'form' => $form->createView()]);
     }

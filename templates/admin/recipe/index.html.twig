@@ -12,6 +12,7 @@ Toutes les recettes
     <thead>
         <tr>
             <th>Title of recipe</th>
+            <th>Category</th>
             <th>Actions</th>
         </tr>
     </thead>
@@ -20,6 +21,7 @@ Toutes les recettes
             <td>
                 <a href="{{ path('admin.recipe.show', {id: recipe.getId(), slug: recipe.getSlug()}) }}">{{ recipe.getTitle() }}</a>
             </td>
+            <td>{{ recipe.Category.title }}</td>
             <td>
                 <div class="d-flex gap-1">
                     <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}" class="btn btn-warning">Edit</a>

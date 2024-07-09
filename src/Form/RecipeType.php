@@ -3,10 +3,13 @@
 namespace App\Form;
 
 use App\Entity\Recipe;
+use App\Entity\Category;
+use Doctrine\ORM\Mapping\Entity;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\String\Slugger\AsciiSlugger;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -28,6 +31,10 @@ class RecipeType extends AbstractType
             ])
             ->add('content')
             ->add('duration')
+            ->add('category', EntityType::class, [
+                'class' => Category::class,
+                'choice_label' => 'title',
+            ])
             ->add('save', SubmitType::class, [
                 'label' => 'Submit',
             ])

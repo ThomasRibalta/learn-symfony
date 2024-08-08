@@ -4,20 +4,21 @@ namespace App\Controller\Admin;
 
 use App\Entity\Recipe;
 use App\Form\RecipeType;
-use App\Repository\CategoryRepository;
 use App\Repository\RecipeRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 #[Route('/admin/recipes', name: 'admin.recipe.')]
+#[IsGranted('ROLE_USER')]
 class RecipeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(Request $request, RecipeRepository $repository, CategoryRepository $Crepository, EntityManagerInterface $em): Response
+    public function index(RecipeRepository $repository, EntityManagerInterface $em): Response
     {
         $em->flush();
         $recipes = $repository->findAll();

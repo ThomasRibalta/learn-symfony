@@ -2,15 +2,13 @@
 
 namespace App\Form;
 
-use App\DTO\ContactDTO;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
-class ContactType extends AbstractType
+class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -23,17 +21,14 @@ class ContactType extends AbstractType
             [
                 'empty_data' => ''
             ])
-            ->add('message', TextType::class, 
-            [
-                'empty_data' => ''
-            ])
-            ->add('service', ChoiceType::class,
+            ->add('roles', ChoiceType::class,
             [
                 'choices' => [
-                    'Compta' => 'compta@demo.fr',
-                    'Helper' => 'helper@demo.fr',
-                    'Marketing' => 'marketing@demo.fr',
+                    'User' => 'ROLE_USER',
+                    'Admin' => 'ROLE_ADMIN',
                 ],
+                'multiple' => true,
+                'expanded' => true,
                 'empty_data' => ''
             ])
             ->add('save', SubmitType::class, 
@@ -41,12 +36,5 @@ class ContactType extends AbstractType
                 'label' => 'Submit',
             ])
         ;
-    }
-
-    public function configureOptions(OptionsResolver $resolver): void
-    {
-        $resolver->setDefaults([
-            'data_class' => ContactDTO::class,
-        ]);
     }
 }

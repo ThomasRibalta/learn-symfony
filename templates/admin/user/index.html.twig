@@ -1,0 +1,40 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title %}
+Users
+{% endblock %}
+
+{% block body %}
+
+<h1>Users</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    {% for user in users %}
+        <tr>
+            <td>
+                <a href="{{ path('admin.user.show', {id: user.id}) }}">{{ user.username }}</a>
+            </td>
+            <td>{{ user.email }}</td>
+            <td>
+                <div class="d-flex gap-1">
+                    <a href="{{ path('admin.user.edit', {id: user.id}) }}" class="btn btn-warning">Edit</a>
+                    <form action = "{{ path('admin.user.delete', {id: user.id}) }}" method="post">
+                        <input type="hidden" name="_method" value="DELETE">
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </div>
+            </td>
+        </tr>
+    {% else %}
+        No user found.
+    {% endfor %}
+</table>
+
+{% endblock %}

@@ -1,0 +1,11 @@
+{% extends 'admin/admin.html.twig' %}
+
+{% block title %}
+    Edit User : {{ user.username }}
+{% endblock %}
+
+{% block body %}
+    <h1>Edit User : {{ user.username }}</h1>
+
+    {{ form(form) }}
+{% endblock %}

@@ -16,8 +16,6 @@ class DefaultController extends AbstractController
     #[Route('/', name: 'index')]
     public function index(RecipeRepository $repository, EntityManagerInterface $em): Response
     {
-        $em->flush();
-        $recipes = $repository->findAll();
-        return $this->render('admin/recipe/index.html.twig', ['recipes' => $recipes]);
+        return $this->redirectToRoute('admin.recipe.index');
     }
 }

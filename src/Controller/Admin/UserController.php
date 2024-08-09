@@ -4,6 +4,7 @@ namespace App\Controller\Admin;
 
 use App\Entity\User;
 use App\Form\UserType;
+use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,9 +19,10 @@ class UserController extends AbstractController
 {
    
     #[Route('/', name: 'index')]
-    public function index(EntityManagerInterface $em): Response
+    public function index(Request $request, UserRepository $repo): Response
     {
-        $user = $em->getRepository(User::class)->findAll();
+        $page = $request->query->getInt('page', 1);
+        $user = $repo->findPaginateUsers($page, 2);
         return $this->render('admin/user/index.html.twig', [
             'users' => $user,
         ]);

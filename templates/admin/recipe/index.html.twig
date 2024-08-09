@@ -21,7 +21,11 @@ Toutes les recettes
             <td>
                 <a href="{{ path('admin.recipe.show', {id: recipe.getId(), slug: recipe.getSlug()}) }}">{{ recipe.getTitle() }}</a>
             </td>
-            <td>{{ recipe.Category.title }}</td>
+            {% if recipe.Category is not null %}
+                <td>{{ recipe.Category.title }}</td>
+            {% else %}
+                <td>No category</td>
+            {% endif %}
             <td>
                 <div class="d-flex gap-1">
                     <a href="{{ path('admin.recipe.edit', {id: recipe.id}) }}" class="btn btn-warning">Edit</a>
@@ -38,5 +42,14 @@ Toutes les recettes
 </table>
 
 <a href="{{ path('admin.recipe.create') }}" class="btn btn-primary">Create a new recipe</a>
+
+{% if page > 1 %}
+    <a href="{{ path('admin.recipe.index', {page: page - 1}) }}" class="btn btn-primary">Previous</a>
+{% endif %}
+
+{% if page != maxPages and maxPages != 0 %}
+    <a href="{{ path('admin.recipe.index', {page: page + 1}) }}" class="btn btn-primary">Next</a>
+{% endif %}
+
 
 {% endblock %}

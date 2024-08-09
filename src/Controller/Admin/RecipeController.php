@@ -18,11 +18,21 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class RecipeController extends AbstractController
 {
     #[Route('/', name: 'index')]
-    public function index(RecipeRepository $repository, EntityManagerInterface $em): Response
+    public function index(RecipeRepository $repository, Request $request): Response
     {
-        $em->flush();
-        $recipes = $repository->findAll();
-        return $this->render('admin/recipe/index.html.twig', ['recipes' => $recipes]);
+        $page = $request->query->getInt('page', 1);
+        $limit = 4;
+        $recipes = $repository->findPaginateRecipes($page, $limit);
+        $maxPages = ceil($recipes->count() / $limit);
+        if ($maxPages < $page && $page > 1)
+        {
+            return $this->redirectToRoute('admin.recipe.index', ['page' => 1]);
+        }
+        return $this->render('admin/recipe/index.html.twig', [
+            'recipes' => $recipes,
+            'maxPages' => $maxPages,
+            'page' => $page
+        ]);
     }
 
     #[Route('/{slug}-{id}', name: 'show', requirements: ['id' => '\d+', 'slug' => '[a-zA-Z0-9-]+'])]
